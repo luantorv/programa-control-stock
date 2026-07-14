@@ -7,14 +7,11 @@ from modelos.esquemas import PRODUCTO_CODIGO, ENCABEZADO_PRODUCTOS
 
 _RUTA_PRODUCTOS = os.path.join(os.path.dirname(__file__), '..', 'datos', 'productos.csv')
 
-
 def leer_productos():
     return leer_csv(_RUTA_PRODUCTOS)
 
-
 def guardar_productos(productos):
     escribir_csv_atomico(_RUTA_PRODUCTOS, productos, ENCABEZADO_PRODUCTOS)
-
 
 def buscar_producto_por_codigo(codigo):
     productos = leer_productos()
@@ -23,12 +20,10 @@ def buscar_producto_por_codigo(codigo):
             return producto
     return None
 
-
 def agregar_producto(producto):
     productos = leer_productos()
     productos.append(producto)
     guardar_productos(productos)
-
 
 def actualizar_producto(producto_actualizado):
     productos = leer_productos()
@@ -37,7 +32,6 @@ def actualizar_producto(producto_actualizado):
             productos[i] = producto_actualizado
             break
     guardar_productos(productos)
-
 
 def eliminar_producto(codigo):
     productos = leer_productos()

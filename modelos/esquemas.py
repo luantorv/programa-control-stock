@@ -17,7 +17,7 @@ PRODUCTO_STOCK = "stock"
 
 ENCABEZADO_PRODUCTOS = [PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK]
 
-# --- Venta del día ---
+# Venta del día
 VENTA_FECHA_HORA = "fecha_hora"
 VENTA_CODIGO_PRODUCTO = "codigo_producto"
 VENTA_NOMBRE_PRODUCTO = "nombre_producto"
@@ -34,7 +34,7 @@ ENCABEZADO_VENTAS = [
     VENTA_TOTAL,
 ]
 
-# --- Cierre diario ---
+# Cierre diario
 CIERRE_FECHA = "fecha"
 CIERRE_TOTAL_VENTAS = "total_ventas"
 CIERRE_TOTAL_UNIDADES = "total_unidades"

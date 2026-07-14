@@ -19,10 +19,17 @@ def leer_csv(ruta):
 def escribir_csv_atomico(ruta, filas, encabezado):
     ruta_temporal = ruta + ".tmp"
 
-    with open(ruta_temporal, 'w', newline='', encoding='utf-8') as archivo_temporal:
-        escritor = csv.DictWriter(archivo_temporal, fieldnames=encabezado)
-        escritor.writeheader()
-        for fila in filas:
-            escritor.writerow(fila)
+    try:
+        with open(ruta_temporal, 'w', newline='', encoding='utf-8') as archivo_temporal:
+            escritor = csv.DictWriter(archivo_temporal, fieldnames=encabezado)
+            escritor.writeheader()
+            for fila in filas:
+                escritor.writerow(fila)
+    except Exception as error:
+        if os.path.exists(ruta_temporal):
+            os.remove(ruta_temporal)
+        print("Error al guardar el archivo:", error)
+        return False
 
     os.replace(ruta_temporal, ruta)
+    return True

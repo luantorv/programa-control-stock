@@ -1,0 +1,1 @@
+# Programa de Control de Stock para un Supermercado

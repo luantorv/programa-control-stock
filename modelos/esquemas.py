@@ -1,11 +1,48 @@
 # SPDX-FileCopyrightText: 2026 Luis Reis Viera
 # SPDX-License-Identifier: Apache-2.0
 
-# Claves del diccionario usuario (coinciden con las columnas de usuarios.csv)
+# --- Usuario ---
 USUARIO_NOMBRE = "nombre"
 USUARIO_CONTRASENA_HASH = "contrasena_hash"
 USUARIO_ROL = "rol"
 
-# Valores posibles del campo rol
 ROL_SUPERVISOR = "supervisor"
 ROL_CAJERO = "cajero"
+
+# --- Producto ---
+PRODUCTO_CODIGO = "codigo"
+PRODUCTO_NOMBRE = "nombre"
+PRODUCTO_PRECIO = "precio"
+PRODUCTO_STOCK = "stock"
+
+ENCABEZADO_PRODUCTOS = [PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK]
+
+# --- Venta del día ---
+VENTA_FECHA_HORA = "fecha_hora"
+VENTA_CODIGO_PRODUCTO = "codigo_producto"
+VENTA_NOMBRE_PRODUCTO = "nombre_producto"
+VENTA_CANTIDAD = "cantidad"
+VENTA_PRECIO_UNITARIO = "precio_unitario"
+VENTA_TOTAL = "total"
+
+ENCABEZADO_VENTAS = [
+    VENTA_FECHA_HORA,
+    VENTA_CODIGO_PRODUCTO,
+    VENTA_NOMBRE_PRODUCTO,
+    VENTA_CANTIDAD,
+    VENTA_PRECIO_UNITARIO,
+    VENTA_TOTAL,
+]
+
+# --- Cierre diario ---
+CIERRE_FECHA = "fecha"
+CIERRE_TOTAL_VENTAS = "total_ventas"
+CIERRE_TOTAL_UNIDADES = "total_unidades"
+CIERRE_IMPORTE_TOTAL = "importe_total"
+
+ENCABEZADO_CIERRE = [
+    CIERRE_FECHA,
+    CIERRE_TOTAL_VENTAS,
+    CIERRE_TOTAL_UNIDADES,
+    CIERRE_IMPORTE_TOTAL,
+]

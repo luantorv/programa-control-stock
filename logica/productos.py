@@ -9,7 +9,7 @@ from persistencia.productos_repo import (
     eliminar_producto,
 )
 from logica.validaciones import codigo_es_valido
-from modelos.esquemas import PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK
+from modelos.esquemas import PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_GRUPO, PRODUCTO_PRECIO, PRODUCTO_STOCK
 
 def buscar_producto(codigo):
     return buscar_producto_por_codigo(codigo)
@@ -21,11 +21,13 @@ def consultar_producto(termino):
         return [por_codigo]
     return buscar_productos_por_nombre(termino)
 
-def dar_de_alta_producto(codigo, nombre, precio, stock):
+def dar_de_alta_producto(codigo, nombre, grupo, precio, stock):
     if not codigo_es_valido(codigo):
-        return "El código debe tener entre 1 y 3 letras mayúsculas seguidas de 3 dígitos (ej: P001)."
+        return "El código debe tener el formato XX YY 99 (2 letras de marca, espacio, 2 de grupo, espacio, 2 alfanuméricos de tipo)."
     if nombre == "":
         return "El nombre del producto no puede estar vacío."
+    if grupo == "":
+        return "El grupo del producto no puede estar vacío."
     if precio <= 0:
         return "El precio debe ser mayor a cero."
     if stock < 0:
@@ -36,6 +38,7 @@ def dar_de_alta_producto(codigo, nombre, precio, stock):
     nuevo_producto = {
         PRODUCTO_CODIGO: codigo,
         PRODUCTO_NOMBRE: nombre,
+        PRODUCTO_GRUPO: grupo,
         PRODUCTO_PRECIO: "{:.2f}".format(precio),
         PRODUCTO_STOCK: str(stock),
     }
@@ -48,9 +51,11 @@ def dar_de_baja_producto(codigo):
     eliminar_producto(codigo)
     return ""
 
-def modificar_producto(codigo, nombre, precio, stock):
+def modificar_producto(codigo, nombre, grupo, precio, stock):
     if nombre == "":
         return "El nombre del producto no puede estar vacío."
+    if grupo == "":
+        return "El grupo del producto no puede estar vacío."
     if precio <= 0:
         return "El precio debe ser mayor a cero."
     if stock < 0:
@@ -61,6 +66,7 @@ def modificar_producto(codigo, nombre, precio, stock):
         return "No existe un producto con el código " + codigo + "."
 
     producto[PRODUCTO_NOMBRE] = nombre
+    producto[PRODUCTO_GRUPO] = grupo
     producto[PRODUCTO_PRECIO] = "{:.2f}".format(precio)
     producto[PRODUCTO_STOCK] = str(stock)
     actualizar_producto(producto)

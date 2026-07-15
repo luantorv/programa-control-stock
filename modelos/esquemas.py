@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # --- Usuario ---
-USUARIO_NOMBRE = "nombre"
-USUARIO_CONTRASENA_HASH = "contrasena_hash"
+USUARIO_NOMBRE = "username"
+USUARIO_CONTRASENA_HASH = "hash"
 USUARIO_ROL = "rol"
 
 ROL_SUPERVISOR = "supervisor"
@@ -12,29 +12,32 @@ ROL_CAJERO = "cajero"
 # --- Producto ---
 PRODUCTO_CODIGO = "codigo"
 PRODUCTO_NOMBRE = "nombre"
+PRODUCTO_GRUPO = "grupo"
 PRODUCTO_PRECIO = "precio"
 PRODUCTO_STOCK = "stock"
 
-ENCABEZADO_PRODUCTOS = [PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK]
+ENCABEZADO_PRODUCTOS = [PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_GRUPO, PRODUCTO_PRECIO, PRODUCTO_STOCK]
 
-# Venta del día
+# --- Venta ---
 VENTA_FECHA_HORA = "fecha_hora"
-VENTA_CODIGO_PRODUCTO = "codigo_producto"
-VENTA_NOMBRE_PRODUCTO = "nombre_producto"
+VENTA_NRO_FACTURA = "nro_factura"
+VENTA_USUARIO = "usuario"
+VENTA_CODIGO = "codigo"
 VENTA_CANTIDAD = "cantidad"
-VENTA_PRECIO_UNITARIO = "precio_unitario"
-VENTA_TOTAL = "total"
+VENTA_PRECIO_UNIT = "precio_unit"
+VENTA_SUBTOTAL = "subtotal"
 
 ENCABEZADO_VENTAS = [
     VENTA_FECHA_HORA,
-    VENTA_CODIGO_PRODUCTO,
-    VENTA_NOMBRE_PRODUCTO,
+    VENTA_NRO_FACTURA,
+    VENTA_USUARIO,
+    VENTA_CODIGO,
     VENTA_CANTIDAD,
-    VENTA_PRECIO_UNITARIO,
-    VENTA_TOTAL,
+    VENTA_PRECIO_UNIT,
+    VENTA_SUBTOTAL,
 ]
 
-# Cierre diario
+# --- Cierre diario ---
 CIERRE_FECHA = "fecha"
 CIERRE_TOTAL_VENTAS = "total_ventas"
 CIERRE_TOTAL_UNIDADES = "total_unidades"

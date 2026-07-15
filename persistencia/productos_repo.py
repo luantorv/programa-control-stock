@@ -3,15 +3,17 @@
 
 import os
 from persistencia.csv_utils import leer_csv, escribir_csv_atomico
+from persistencia.rutas import directorio_datos
 from modelos.esquemas import PRODUCTO_CODIGO, PRODUCTO_NOMBRE, ENCABEZADO_PRODUCTOS
 
-_RUTA_PRODUCTOS = os.path.join(os.path.dirname(__file__), '..', 'datos', 'productos.csv')
+def _ruta_productos():
+    return os.path.join(directorio_datos(), 'productos.csv')
 
 def leer_productos():
-    return leer_csv(_RUTA_PRODUCTOS)
+    return leer_csv(_ruta_productos())
 
 def guardar_productos(productos):
-    escribir_csv_atomico(_RUTA_PRODUCTOS, productos, ENCABEZADO_PRODUCTOS)
+    escribir_csv_atomico(_ruta_productos(), productos, ENCABEZADO_PRODUCTOS)
 
 def buscar_producto_por_codigo(codigo):
     productos = leer_productos()
@@ -40,7 +42,6 @@ def eliminar_producto(codigo):
         if producto[PRODUCTO_CODIGO] != codigo:
             productos_restantes.append(producto)
     guardar_productos(productos_restantes)
-
 
 def buscar_productos_por_nombre(nombre):
     productos = leer_productos()

@@ -16,7 +16,22 @@ Aplicación de consola en Python que reemplaza el registro manual en papel por u
 
 - Python 3.12
 
-Si el proyecto está clonado con su `flake.nix`, podés obtener el entorno con:
+**Instalación con Nix** (ejecutar desde cualquier directorio, sin clonar):
+
+```bash
+nix run github:luantorv/programa-control-stock
+```
+
+O para instalarlo de forma permanente:
+
+```bash
+nix profile install github:luantorv/programa-control-stock
+control-stock
+```
+
+Los datos se guardan en `$XDG_DATA_HOME/control-stock` (por defecto `~/.local/share/control-stock`). Los archivos iniciales se copian automáticamente en el primer uso.
+
+**Entorno de desarrollo** con el repositorio clonado:
 
 ```bash
 nix develop

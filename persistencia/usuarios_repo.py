@@ -3,8 +3,8 @@
 
 import os
 from persistencia.csv_utils import leer_csv
-
-_RUTA_USUARIOS = os.path.join(os.path.dirname(__file__), '..', 'datos', 'users.csv')
+from persistencia.rutas import directorio_datos
 
 def leer_usuarios():
-    return leer_csv(_RUTA_USUARIOS)
+    ruta = os.path.join(directorio_datos(), 'users.csv')
+    return leer_csv(ruta)

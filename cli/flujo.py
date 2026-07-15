@@ -8,6 +8,7 @@ from cli import entradas, menus
 from modelos.esquemas import (
     ROL_SUPERVISOR, ROL_CAJERO,
     PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_GRUPO, PRODUCTO_PRECIO, PRODUCTO_STOCK,
+    VENTA_NRO_FACTURA, VENTA_FECHA_HORA, VENTA_CODIGO, VENTA_CANTIDAD, VENTA_PRECIO_UNIT, VENTA_SUBTOTAL,
     CIERRE_FECHA, CIERRE_TOTAL_VENTAS, CIERRE_TOTAL_UNIDADES, CIERRE_IMPORTE_TOTAL,
 )
 
@@ -117,6 +118,21 @@ def _flujo_ajustar_stock():
 
 def _flujo_cierre_diario():
     print()
+    ventas = logica_ventas.obtener_ventas_del_dia()
+
+    print("=== Ventas del día ===")
+    if len(ventas) == 0:
+        print("No hay ventas registradas en el día.")
+    else:
+        for venta in ventas:
+            print("N°" + venta[VENTA_NRO_FACTURA],
+                  "|", venta[VENTA_FECHA_HORA],
+                  "| Cód:", venta[VENTA_CODIGO],
+                  "|", venta[VENTA_CANTIDAD], "unid. x $" + venta[VENTA_PRECIO_UNIT],
+                  "| Subtotal: $" + venta[VENTA_SUBTOTAL])
+    print("======================")
+    print()
+
     confirma = entradas.pedir_confirmacion(
         "¿Confirma el cierre del día? Se consolidarán las ventas y no se podrá deshacer. (s/n): "
     )

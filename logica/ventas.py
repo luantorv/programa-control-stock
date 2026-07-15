@@ -16,6 +16,10 @@ from modelos.esquemas import (
 )
 
 
+def obtener_ventas_del_dia():
+    return leer_ventas_del_dia()
+
+
 def registrar_venta(codigo, cantidad, nombre_usuario):
     if cantidad <= 0:
         return "La cantidad a vender debe ser mayor a cero.", 0.0

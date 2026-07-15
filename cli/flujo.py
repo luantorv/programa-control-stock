@@ -110,25 +110,6 @@ def _flujo_ajustar_stock():
             return
         print("Error:", error)
 
-# Menús
-def _menu_supervisor():
-    while True:
-        menus.mostrar_menu_supervisor()
-        opcion = entradas.pedir_opcion(["0", "1", "2", "3", "4", "5"])
-
-        if opcion == "0":
-            break
-        elif opcion == "1":
-            _flujo_alta_producto()
-        elif opcion == "2":
-            _flujo_baja_producto()
-        elif opcion == "3":
-            _flujo_modificar_producto()
-        elif opcion == "4":
-            _flujo_ajustar_stock()
-        elif opcion == "5":
-            _flujo_cierre_diario()
-
 def _flujo_cierre_diario():
     print()
     confirma = entradas.pedir_confirmacion(
@@ -149,6 +130,24 @@ def _flujo_cierre_diario():
     print("=================================")
     print("Ventas del día consolidadas en cierre_diario.csv.")
 
+# Menús
+def _menu_supervisor():
+    while True:
+        menus.mostrar_menu_supervisor()
+        opcion = entradas.pedir_opcion(["0", "1", "2", "3", "4", "5"])
+
+        if opcion == "0":
+            break
+        elif opcion == "1":
+            _flujo_alta_producto()
+        elif opcion == "2":
+            _flujo_baja_producto()
+        elif opcion == "3":
+            _flujo_modificar_producto()
+        elif opcion == "4":
+            _flujo_ajustar_stock()
+        elif opcion == "5":
+            _flujo_cierre_diario()
 
 def _flujo_venta():
     while True:
@@ -163,7 +162,6 @@ def _flujo_venta():
             print("Venta registrada. Total: $" + "{:.2f}".format(total))
             return
         print("Error:", error)
-
 
 def _flujo_consulta():
     while True:
@@ -183,7 +181,6 @@ def _flujo_consulta():
                   "| Precio: $" + producto[PRODUCTO_PRECIO],
                   "| Stock:", producto[PRODUCTO_STOCK], "unidades")
         return
-
 
 def _menu_cajero():
     while True:

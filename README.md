@@ -39,8 +39,8 @@ python main.py
 main.py                        # Punto de entrada
 datos/
     productos.csv              # Catálogo de productos
-    usuarios.csv               # Usuarios con hash de contraseña y rol
-    ventas_dia.csv             # Ventas del día (se limpia al cerrar el día)
+    users.csv                  # Usuarios con hash de contraseña y rol
+    ventas_YYYYMMDD.csv        # Ventas del día (un archivo por fecha)
     cierre_diario.csv          # Historial de cierres diarios (acumulativo)
 modelos/
     esquemas.py                # Constantes de claves CSV y roles

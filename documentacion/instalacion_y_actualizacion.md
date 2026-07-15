@@ -64,7 +64,7 @@ No es necesario instalar Python manualmente en ese caso.
 
 ## Usuarios predefinidos
 
-El archivo `datos/usuarios.csv` incluye dos usuarios listos para usar:
+El archivo `datos/users.csv` incluye dos usuarios listos para usar:
 
 | Usuario | Contraseña | Rol |
 |---------|------------|-----|
@@ -77,12 +77,12 @@ Las contraseñas están almacenadas como hash SHA-256; el archivo CSV no contien
 
 ## Agregar o modificar usuarios
 
-El programa no incluye una pantalla para gestionar usuarios. Los cambios se hacen editando `datos/usuarios.csv` directamente.
+El programa no incluye una pantalla para gestionar usuarios. Los cambios se hacen editando `datos/users.csv` directamente.
 
 ### Formato del archivo
 
 ```
-nombre,contrasena_hash,rol
+username,hash,rol
 supervisor,<hash>,supervisor
 cajero,<hash>,cajero
 ```

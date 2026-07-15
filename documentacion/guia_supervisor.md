@@ -52,6 +52,7 @@ Si el código ya existe o algún dato no es válido, el sistema muestra el error
 ```
 Código del producto (ej: LA EC A1 | Enter para cancelar): LA EC A1
 Nombre del producto: Leche entera 1L
+Grupo del producto: Lácteos
 Precio unitario ($): 1.50
 Stock inicial: 100
 Producto dado de alta con éxito.
@@ -95,9 +96,10 @@ Actualiza el nombre, precio o stock de un producto existente.
 **Ejemplo:**
 ```
 Código del producto a modificar (Enter para cancelar): LA EC A1
-Datos actuales -> Nombre: Leche entera 1L | Precio: $1.50 | Stock: 100
+Datos actuales -> Nombre: Leche entera 1L | Grupo: Lácteos | Precio: $1.50 | Stock: 100
 
 Nuevo nombre: Leche entera 1 litro
+Nuevo grupo: Lácteos
 Nuevo precio ($): 1.75
 Nuevo stock: 95
 Producto modificado con éxito.

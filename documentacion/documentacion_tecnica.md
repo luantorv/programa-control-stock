@@ -33,21 +33,23 @@ Define todas las constantes usadas como claves de diccionario al leer o escribir
 
 | Constante | Valor |
 |-----------|-------|
-| `USUARIO_NOMBRE` | `"nombre"` |
-| `USUARIO_CONTRASENA_HASH` | `"contrasena_hash"` |
+| `USUARIO_NOMBRE` | `"username"` |
+| `USUARIO_CONTRASENA_HASH` | `"hash"` |
 | `USUARIO_ROL` | `"rol"` |
 | `ROL_SUPERVISOR` | `"supervisor"` |
 | `ROL_CAJERO` | `"cajero"` |
 | `PRODUCTO_CODIGO` | `"codigo"` |
 | `PRODUCTO_NOMBRE` | `"nombre"` |
+| `PRODUCTO_GRUPO` | `"grupo"` |
 | `PRODUCTO_PRECIO` | `"precio"` |
 | `PRODUCTO_STOCK` | `"stock"` |
 | `VENTA_FECHA_HORA` | `"fecha_hora"` |
-| `VENTA_CODIGO_PRODUCTO` | `"codigo_producto"` |
-| `VENTA_NOMBRE_PRODUCTO` | `"nombre_producto"` |
+| `VENTA_NRO_FACTURA` | `"nro_factura"` |
+| `VENTA_USUARIO` | `"usuario"` |
+| `VENTA_CODIGO` | `"codigo"` |
 | `VENTA_CANTIDAD` | `"cantidad"` |
-| `VENTA_PRECIO_UNITARIO` | `"precio_unitario"` |
-| `VENTA_TOTAL` | `"total"` |
+| `VENTA_PRECIO_UNIT` | `"precio_unit"` |
+| `VENTA_SUBTOTAL` | `"subtotal"` |
 | `CIERRE_FECHA` | `"fecha"` |
 | `CIERRE_TOTAL_VENTAS` | `"total_ventas"` |
 | `CIERRE_TOTAL_UNIDADES` | `"total_unidades"` |
@@ -100,11 +102,13 @@ Los usuarios no se modifican desde el programa; se gestionan manualmente editand
 
 ### `persistencia/ventas_repo.py`
 
+El nombre del archivo de ventas incluye la fecha: `ventas_YYYYMMDD.csv`. Cada día genera su propio archivo; no se eliminan al hacer el cierre.
+
 | Función | Descripción |
 |---------|-------------|
-| `leer_ventas_del_dia()` | Devuelve las ventas del día. |
-| `registrar_venta(venta)` | Agrega una venta al CSV del día. |
-| `limpiar_ventas_del_dia()` | Escribe el CSV vacío (solo encabezado). Se llama al cierre diario. |
+| `_ruta_ventas_hoy()` | Devuelve la ruta del archivo de ventas de la fecha actual. |
+| `leer_ventas_del_dia()` | Devuelve las ventas del archivo de hoy (lista vacía si no existe). |
+| `registrar_venta(venta)` | Agrega una venta al archivo de hoy. |
 | `leer_cierres()` | Devuelve el historial de cierres. |
 | `registrar_cierre(cierre)` | Agrega un cierre al CSV acumulativo. |
 
@@ -150,27 +154,27 @@ Todas las funciones devuelven `""` en caso de éxito, o un string con el mensaje
 |---------|-------------|
 | `buscar_producto(codigo)` | Wrapper de `buscar_producto_por_codigo`. |
 | `consultar_producto(termino)` | Intenta coincidencia exacta por código; si no, busca por nombre. Devuelve lista. |
-| `dar_de_alta_producto(codigo, nombre, precio, stock)` | Valida formato, unicidad y valores; agrega el producto. |
+| `dar_de_alta_producto(codigo, nombre, grupo, precio, stock)` | Valida formato, unicidad y valores; agrega el producto. |
 | `dar_de_baja_producto(codigo)` | Verifica existencia y elimina. |
-| `modificar_producto(codigo, nombre, precio, stock)` | Valida y actualiza. |
+| `modificar_producto(codigo, nombre, grupo, precio, stock)` | Valida y actualiza. |
 | `ajustar_stock(codigo, nueva_cantidad)` | Valida ≥ 0 y actualiza. |
 
 ---
 
 ### `logica/ventas.py`
 
-#### `registrar_venta(codigo, cantidad) → tuple`
+#### `registrar_venta(codigo, cantidad, nombre_usuario) → tuple`
 
-Devuelve `("", total)` en caso de éxito, o `("mensaje de error", 0.0)` en caso de fallo. Verifica:
+Devuelve `("", subtotal)` en caso de éxito, o `("mensaje de error", 0.0)` en caso de fallo. Verifica:
 - Cantidad mayor a cero.
 - Producto existente.
 - Stock suficiente (la venta no puede dejar el stock en negativo).
 
-Si todo es válido, descuenta el stock, actualiza el producto y registra la venta con fecha y hora.
+Si todo es válido, descuenta el stock, calcula el número de factura (secuencial por día), y registra la venta con fecha, hora y usuario.
 
 #### `ejecutar_cierre_diario() → dict`
 
-Consolida las ventas del día: suma totales, escribe el cierre en `cierre_diario.csv` y limpia `ventas_dia.csv`. Devuelve el diccionario del cierre para mostrarlo en pantalla.
+Consolida las ventas del día: suma totales y escribe el cierre en `cierre_diario.csv`. El archivo `ventas_YYYYMMDD.csv` **no se elimina**; queda como historial. Devuelve el diccionario del cierre para mostrarlo en pantalla.
 
 ---
 
@@ -198,7 +202,7 @@ Centraliza toda interacción de entrada. Funciones:
 ### `cli/flujo.py`
 
 Punto de navegación. Une menús, entradas y lógica. Define:
-- `_iniciar_sesion()` — hasta 3 intentos de login.
+- `_iniciar_sesion()` — hasta 3 intentos de login; devuelve `(rol, nombre_usuario)` o `(None, None)`.
 - Flujos del supervisor: `_flujo_alta_producto`, `_flujo_baja_producto`, `_flujo_modificar_producto`, `_flujo_ajustar_stock`, `_flujo_cierre_diario`.
 - `_menu_supervisor()` — bucle principal del supervisor.
 - Flujos del cajero: `_flujo_venta`, `_flujo_consulta`.
@@ -211,33 +215,33 @@ Punto de navegación. Une menús, entradas y lógica. Define:
 
 Todos en la carpeta `datos/`. Se crean con solo el encabezado si no existen (excepto `usuarios.csv`, que debe existir con al menos un usuario).
 
-| Archivo | Descripción | Reset al cierre |
-|---------|-------------|-----------------|
-| `productos.csv` | Catálogo completo de productos | No |
-| `usuarios.csv` | Usuarios con hash y rol | No |
-| `ventas_dia.csv` | Ventas del día en curso | Sí (se vacía) |
-| `cierre_diario.csv` | Historial de cierres | No (acumulativo) |
+| Archivo | Descripción |
+|---------|-------------|
+| `productos.csv` | Catálogo completo de productos |
+| `users.csv` | Usuarios con hash y rol |
+| `ventas_YYYYMMDD.csv` | Ventas del día (uno por fecha, nunca se eliminan) |
+| `cierre_diario.csv` | Historial de cierres (acumulativo) |
 
 ### Esquema de `productos.csv`
 
 ```
-codigo,nombre,precio,stock
-P001,Leche entera,1.50,100
+codigo,nombre,grupo,precio,stock
+LA EC A1,Leche entera 1L,Lácteos,1.50,100
 ```
 
-### Esquema de `usuarios.csv`
+### Esquema de `users.csv`
 
 ```
-nombre,contrasena_hash,rol
+username,hash,rol
 supervisor,<hash SHA-256>,supervisor
 cajero,<hash SHA-256>,cajero
 ```
 
-### Esquema de `ventas_dia.csv`
+### Esquema de `ventas_YYYYMMDD.csv`
 
 ```
-fecha_hora,codigo_producto,nombre_producto,cantidad,precio_unitario,total
-2026-07-14 10:23:45,P001,Leche entera,2,1.50,3.00
+fecha_hora,nro_factura,usuario,codigo,cantidad,precio_unit,subtotal
+2026-07-14 10:23:45,1,cajero,LA EC A1,2,1.50,3.00
 ```
 
 ### Esquema de `cierre_diario.csv`

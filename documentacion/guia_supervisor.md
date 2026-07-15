@@ -39,8 +39,8 @@ Ingresar el número de la opción deseada y presionar Enter.
 Permite registrar un nuevo producto en el sistema.
 
 **Pasos:**
-1. Ingresar el código del producto (ej: `P001`, `LAC100`).
-   - Formato obligatorio: 1 a 3 letras mayúsculas seguidas de exactamente 3 dígitos.
+1. Ingresar el código del producto (ej: `LA EC A1`, `AB CD 12`).
+   - Formato obligatorio: 2 letras de marca + espacio + 2 letras de grupo + espacio + 2 caracteres alfanuméricos de tipo.
    - Presionar Enter sin escribir nada cancela la operación.
 2. Ingresar el nombre del producto.
 3. Ingresar el precio unitario (puede tener decimales, ej: `1.50`).
@@ -50,7 +50,7 @@ Si el código ya existe o algún dato no es válido, el sistema muestra el error
 
 **Ejemplo:**
 ```
-Código del producto (ej: P001 | Enter para cancelar): LAC001
+Código del producto (ej: LA EC A1 | Enter para cancelar): LA EC A1
 Nombre del producto: Leche entera 1L
 Precio unitario ($): 1.50
 Stock inicial: 100
@@ -73,7 +73,7 @@ La baja es permanente. No se puede deshacer desde el programa.
 
 **Ejemplo:**
 ```
-Código del producto a eliminar (Enter para cancelar): LAC001
+Código del producto a eliminar (Enter para cancelar): LA EC A1
 Producto encontrado: Leche entera 1L | Stock: 100
 ¿Confirma la baja? (s/n): s
 Producto eliminado con éxito.
@@ -94,7 +94,7 @@ Actualiza el nombre, precio o stock de un producto existente.
 
 **Ejemplo:**
 ```
-Código del producto a modificar (Enter para cancelar): LAC001
+Código del producto a modificar (Enter para cancelar): LA EC A1
 Datos actuales -> Nombre: Leche entera 1L | Precio: $1.50 | Stock: 100
 
 Nuevo nombre: Leche entera 1 litro
@@ -118,7 +118,7 @@ Establece una cantidad de stock específica para un producto, sin necesidad de p
 
 **Ejemplo:**
 ```
-Código del producto (Enter para cancelar): LAC001
+Código del producto (Enter para cancelar): LA EC A1
 Nueva cantidad en stock: 120
 Stock actualizado con éxito.
 ```
@@ -164,5 +164,5 @@ Seleccionar la opción `0` en el menú principal cierra la sesión y termina el 
 ## Consideraciones importantes
 
 - El stock nunca puede quedar en valores negativos, ya sea por ajuste manual o por venta.
-- Los códigos de producto tienen un formato fijo: entre 1 y 3 letras mayúsculas seguidas de exactamente 3 dígitos (ej: `P001`, `AB023`, `LAC100`). El sistema rechaza cualquier código que no cumpla este formato.
+- Los códigos de producto tienen un formato fijo: 2 letras de marca + espacio + 2 letras de grupo + espacio + 2 caracteres alfanuméricos de tipo (ej: `LA EC A1`, `AB CD 12`). El sistema rechaza cualquier código que no cumpla este formato.
 - Una vez realizado el cierre diario, las ventas del día quedan archivadas y no pueden editarse desde el programa.

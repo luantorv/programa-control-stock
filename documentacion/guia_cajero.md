@@ -43,7 +43,7 @@ Registra la venta de un producto y descuenta automáticamente las unidades del s
 
 **Ejemplo:**
 ```
-Código del producto a vender (Enter para cancelar): LAC001
+Código del producto a vender (Enter para cancelar): LA EC A1
 Cantidad: 3
 Venta registrada. Total: $4.50
 ```
@@ -71,15 +71,15 @@ Muestra el precio y el stock actual de un producto. Sirve para verificar disponi
 
 **Búsqueda por código exacto:**
 ```
-Código o nombre del producto (Enter para cancelar): LAC001
-Código: LAC001 | Nombre: Leche entera 1 litro | Precio: $1.75 | Stock: 92 unidades
+Código o nombre del producto (Enter para cancelar): LA EC A1
+Código: LA EC A1 | Nombre: Leche entera 1 litro | Precio: $1.75 | Stock: 92 unidades
 ```
 
 **Búsqueda por nombre (parcial):**
 ```
 Código o nombre del producto (Enter para cancelar): leche
-Código: LAC001 | Nombre: Leche entera 1 litro | Precio: $1.75 | Stock: 92 unidades
-Código: LAC002 | Nombre: Leche descremada 1 litro | Precio: $1.90 | Stock: 45 unidades
+Código: LA EC A1 | Nombre: Leche entera 1 litro | Precio: $1.75 | Stock: 92 unidades
+Código: LA EC A2 | Nombre: Leche descremada 1 litro | Precio: $1.90 | Stock: 45 unidades
 ```
 
 La búsqueda por nombre no distingue entre mayúsculas y minúsculas.

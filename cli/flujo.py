@@ -34,7 +34,7 @@ def _iniciar_sesion():
 def _flujo_alta_producto():
     while True:
         print()
-        codigo = entradas.pedir_texto("Código del producto (ej: P001 | Enter para cancelar): ").upper()
+        codigo = entradas.pedir_texto("Código del producto (ej: LA EC A1 | Enter para cancelar): ").upper()
         if codigo == "":
             return
         nombre = entradas.pedir_texto("Nombre del producto: ")

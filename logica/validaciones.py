@@ -3,9 +3,9 @@
 
 import re
 
-# Formato acordado: entre 1 y 3 letras mayúsculas seguidas de exactamente 3 dígitos.
-# Ejemplos válidos: P001, AB123, XYZ999
-PATRON_CODIGO_PRODUCTO = r'^[A-Z]{1,3}\d{3}$'
+# Formato acordado: 2 letras (marca) + espacio + 2 letras (grupo) + espacio + 2 alfanuméricos (tipo).
+# Ejemplos válidos: LA EC A1, AB CD 12, XX YY 3Z
+PATRON_CODIGO_PRODUCTO = r'^[A-Z]{2}\s[A-Z]{2}\s[A-Z0-9]{2}$'
 
 def codigo_es_valido(codigo):
     resultado = re.match(PATRON_CODIGO_PRODUCTO, codigo)

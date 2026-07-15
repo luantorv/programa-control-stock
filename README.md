@@ -1,5 +1,7 @@
 # Programa de Control de Stock para un Supermercado
 
+[![Tests](https://github.com/luantorv/programa-control-stock/actions/workflows/tests.yml/badge.svg)](https://github.com/luantorv/programa-control-stock/actions/workflows/tests.yml)
+
 Aplicación de consola en Python que reemplaza el registro manual en papel por una gestión digital del inventario y las ventas de un supermercado. El sistema diferencia dos roles —Supervisor y Cajero— y garantiza que ninguna venta pueda realizarse si no hay stock suficiente.
 
 ## Características

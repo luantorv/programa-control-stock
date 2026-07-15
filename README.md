@@ -37,6 +37,9 @@ Los datos se guardan en `$XDG_DATA_HOME/control-stock` (por defecto `~/.local/sh
 nix develop
 ```
 
+>[!TIP]
+> Para una explicación más detallada tiene a su disposición [una guía de instalación y actualización más detallada](https://github.com/luantorv/programa-control-stock/blob/main/documentacion/instalacion_y_actualizacion.md)
+
 ## Cómo ejecutar
 
 ```bash
@@ -54,6 +57,11 @@ python main.py
 
 ```
 main.py                        # Punto de entrada
+documentación/
+    documentacion_tecnica.md
+    guia_cajero.md
+    guia_supervisor.md
+    instalación_y_actualizacion.md
 datos/
     productos.csv              # Catálogo de productos
     users.csv                  # Usuarios con hash de contraseña y rol
@@ -76,6 +84,10 @@ cli/
     entradas.py                # Todos los input() y parseo de datos del usuario
     flujo.py                   # Navegación: une menús, entradas y lógica
 ```
+
+## Documentación
+
+En la carpeta [documentacion](https://github.com/luantorv/programa-control-stock/blob/main/documentacion/) podrá encontrar guías detalladas para la instalación y actualización, para el uso de ambos usuarios y una documentación técnica que detalla el funcionamiento interno del programa.
 
 ## Aclaración
 

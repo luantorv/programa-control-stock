@@ -5,7 +5,11 @@ from logica.autenticacion import autenticar
 from logica import productos as logica_productos
 from logica import ventas as logica_ventas
 from cli import entradas, menus
-from modelos.esquemas import ROL_SUPERVISOR, ROL_CAJERO, PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK
+from modelos.esquemas import (
+    ROL_SUPERVISOR, ROL_CAJERO,
+    PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK,
+    CIERRE_FECHA, CIERRE_TOTAL_VENTAS, CIERRE_TOTAL_UNIDADES, CIERRE_IMPORTE_TOTAL,
+)
 
 MAX_INTENTOS = 3
 
@@ -123,7 +127,28 @@ def _menu_supervisor():
         elif opcion == "4":
             _flujo_ajustar_stock()
         elif opcion == "5":
-            print("Cierre diario: por implementar.")
+            _flujo_cierre_diario()
+
+def _flujo_cierre_diario():
+    print()
+    confirma = entradas.pedir_confirmacion(
+        "¿Confirma el cierre del día? Se consolidarán las ventas y no se podrá deshacer. (s/n): "
+    )
+    if not confirma:
+        print("Cierre cancelado.")
+        return
+
+    cierre = logica_ventas.ejecutar_cierre_diario()
+
+    print()
+    print("=== Resumen del cierre diario ===")
+    print("Fecha:              ", cierre[CIERRE_FECHA])
+    print("Ventas realizadas:  ", cierre[CIERRE_TOTAL_VENTAS])
+    print("Unidades vendidas:  ", cierre[CIERRE_TOTAL_UNIDADES])
+    print("Importe total:     $" + cierre[CIERRE_IMPORTE_TOTAL])
+    print("=================================")
+    print("Ventas del día consolidadas en cierre_diario.csv.")
+
 
 def _flujo_venta():
     while True:

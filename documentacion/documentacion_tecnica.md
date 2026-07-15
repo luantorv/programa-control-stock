@@ -76,13 +76,26 @@ Este patrón garantiza que el archivo original nunca queda en estado corrupto si
 
 ---
 
+### `persistencia/rutas.py`
+
+Centraliza la resolución de la carpeta de datos. Todos los repositorios la llaman en lugar de hardcodear rutas.
+
+#### `directorio_datos() → str`
+Devuelve la carpeta de datos según este orden de prioridad:
+1. El valor de la variable de entorno `CONTROL_STOCK_DATOS_DIR` (usada por la instalación Nix).
+2. La carpeta `datos/` relativa a la raíz del proyecto (modo manual / desarrollo).
+
+Crea el directorio si no existe (`os.makedirs(..., exist_ok=True)`).
+
+---
+
 ### `persistencia/usuarios_repo.py`
 
 | Función | Descripción |
 |---------|-------------|
 | `leer_usuarios()` | Devuelve todos los usuarios del CSV. |
 
-Los usuarios no se modifican desde el programa; se gestionan manualmente editando `datos/usuarios.csv`.
+Los usuarios no se modifican desde el programa; se gestionan manualmente editando `datos/users.csv`.
 
 ---
 
@@ -213,7 +226,7 @@ Punto de navegación. Une menús, entradas y lógica. Define:
 
 ## Archivos de datos
 
-Todos en la carpeta `datos/`. Se crean con solo el encabezado si no existen (excepto `usuarios.csv`, que debe existir con al menos un usuario).
+Todos en la carpeta `datos/`. Se crean con solo el encabezado si no existen (excepto `users.csv`, que debe existir con al menos un usuario).
 
 | Archivo | Descripción |
 |---------|-------------|

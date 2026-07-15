@@ -1,14 +1,66 @@
 # Guía de Instalación y Actualización
 
-## Requisitos
-
-- **Python 3.12** o superior.
-- No se requieren librerías adicionales; el programa usa únicamente la biblioteca estándar de Python.
-- Acceso de escritura a la carpeta donde se instale el proyecto (para crear y modificar los archivos CSV en `datos/`).
+Hay dos formas de instalar el programa: con Nix (recomendado, gestiona todo automáticamente) o de forma manual con Python.
 
 ---
 
-## Instalación
+## Instalación con Nix
+
+La forma más simple, sin necesidad de clonar el repositorio ni instalar Python manualmente.
+
+### Ejecutar una vez (sin instalar)
+
+```bash
+nix run github:luantorv/programa-control-stock
+```
+
+### Instalar de forma permanente
+
+```bash
+nix profile install github:luantorv/programa-control-stock
+control-stock
+```
+
+### Dónde se guardan los datos
+
+Al usar la instalación Nix, los archivos CSV se guardan en:
+
+```
+$XDG_DATA_HOME/control-stock/
+```
+
+Si la variable `XDG_DATA_HOME` no está definida (lo habitual), la ruta efectiva es:
+
+```
+~/.local/share/control-stock/
+```
+
+En el primer uso, el programa copia automáticamente los archivos iniciales a esa carpeta. No hace falta hacer nada manualmente.
+
+### Cambiar la ubicación de los datos (avanzado)
+
+La variable de entorno `CONTROL_STOCK_DATOS_DIR` permite indicar cualquier otra carpeta. Funciona tanto con la instalación Nix como con la manual:
+
+```bash
+export CONTROL_STOCK_DATOS_DIR="/ruta/personalizada/datos"
+control-stock   # o: python main.py
+```
+
+### Actualizar (instalación Nix)
+
+```bash
+nix profile upgrade programa-control-stock
+```
+
+---
+
+## Instalación manual
+
+### Requisitos
+
+- **Python 3.12** o superior.
+- No se requieren librerías adicionales; el programa usa únicamente la biblioteca estándar de Python.
+- Acceso de escritura a la carpeta donde se clone el proyecto (para los archivos CSV en `datos/`).
 
 ### 1. Obtener el código fuente
 
@@ -39,32 +91,32 @@ python3 --version
 python main.py
 ```
 
-O bien:
+Con la instalación manual, los datos se leen y escriben en la carpeta `datos/` dentro del propio proyecto. Los archivos ya vienen con sus encabezados listos.
 
-```bash
-python3 main.py
-```
+### Entorno de desarrollo con Nix (opcional)
 
-Al iniciar por primera vez, los archivos `datos/ventas_dia.csv` y `datos/cierre_diario.csv` ya vienen con su encabezado. `datos/productos.csv` puede estar vacío o contener productos de ejemplo. `datos/usuarios.csv` contiene los usuarios predefinidos.
-
----
-
-## Entorno con Nix (opcional)
-
-Si el sistema tiene Nix instalado con soporte para Flakes, el entorno de Python correcto se obtiene automáticamente:
+Si el sistema tiene Nix instalado con soporte para Flakes, el entorno de Python correcto se obtiene automáticamente sin instalar nada a nivel del sistema:
 
 ```bash
 nix develop
 python main.py
 ```
 
-No es necesario instalar Python manualmente en ese caso.
+### Actualizar (instalación manual)
+
+```bash
+git pull origin main
+```
+
+Esto descarga los últimos cambios sin afectar los archivos de datos en `datos/`.
+
+> **Nota sobre el esquema de datos**: si una actualización agrega columnas nuevas a los CSV, es necesario editarlos manualmente agregando la columna con un valor por defecto en cada fila existente. Esto se indica en las notas de cada actualización.
 
 ---
 
 ## Usuarios predefinidos
 
-El archivo `datos/users.csv` incluye dos usuarios listos para usar:
+El archivo `users.csv` incluye dos usuarios listos para usar:
 
 | Usuario | Contraseña | Rol |
 |---------|------------|-----|
@@ -77,7 +129,12 @@ Las contraseñas están almacenadas como hash SHA-256; el archivo CSV no contien
 
 ## Agregar o modificar usuarios
 
-El programa no incluye una pantalla para gestionar usuarios. Los cambios se hacen editando `datos/users.csv` directamente.
+El programa no incluye una pantalla para gestionar usuarios. Los cambios se hacen editando `users.csv` directamente.
+
+| Modo | Ruta del archivo |
+|------|-----------------|
+| Instalación Nix | `~/.local/share/control-stock/users.csv` |
+| Instalación manual | `datos/users.csv` dentro del proyecto |
 
 ### Formato del archivo
 
@@ -100,11 +157,11 @@ hash_resultado = hashlib.sha256(contrasena.encode('utf-8')).hexdigest()
 print(hash_resultado)
 ```
 
-Copiar el resultado e ingresarlo en la columna `contrasena_hash` del CSV.
+Copiar el resultado e ingresarlo en la columna `hash` del CSV.
 
 ### Ejemplo: agregar un segundo cajero
 
-Abrir `datos/usuarios.csv` con cualquier editor de texto y agregar una línea:
+Abrir `users.csv` con cualquier editor de texto y agregar una línea:
 
 ```
 cajero2,<hash de la contraseña>,cajero
@@ -112,40 +169,23 @@ cajero2,<hash de la contraseña>,cajero
 
 ---
 
-## Actualización del programa
-
-### Actualizar desde el repositorio Git
-
-```bash
-git pull origin main
-```
-
-Esto descarga los últimos cambios sin afectar los archivos de datos en `datos/`.
-
-> Los archivos CSV en `datos/` están fuera del control de versiones y no se modifican al actualizar el código.
-
-### Verificar compatibilidad del esquema de datos
-
-Si una actualización agrega columnas nuevas a los CSV, es necesario actualizar los archivos existentes manualmente agregando la columna con un valor por defecto en cada fila existente. Esto se indica en las notas de la actualización correspondiente.
-
----
-
 ## Solución de problemas comunes
 
-### El programa no arranca
+### El programa no arranca (instalación manual)
 
 - Verificar que se está ejecutando desde la carpeta raíz del proyecto (donde está `main.py`).
 - Confirmar que la versión de Python es 3.12 o superior.
 
 ### "No se puede iniciar sesión"
 
-- Confirmar que `datos/usuarios.csv` existe y tiene el encabezado correcto: `nombre,contrasena_hash,rol`.
-- Verificar que el hash de la contraseña fue generado con SHA-256 en codificación UTF-8.
+- Confirmar que `users.csv` existe en la carpeta de datos y tiene el encabezado correcto: `username,hash,rol`.
+- Verificar que el hash de la contraseña fue generado con SHA-256 en codificación UTF-8 (ver sección anterior).
 
 ### Los datos no se guardan
 
-- Verificar que el usuario del sistema operativo tiene permiso de escritura en la carpeta `datos/`.
+- **Instalación manual**: verificar que el usuario del sistema operativo tiene permiso de escritura en la carpeta `datos/`.
+- **Instalación Nix**: verificar que `~/.local/share/control-stock/` existe y es escribible.
 
 ### El archivo CSV quedó corrupto
 
-Los archivos CSV se escriben mediante escritura atómica: si el programa se interrumpe durante una escritura, el archivo original no se modifica. Si de todas formas un archivo queda en mal estado, puede restaurarse desde la última copia de seguridad o reconstruirse manualmente respetando el encabezado de cada archivo.
+Los archivos CSV se escriben mediante escritura atómica: si el programa se interrumpe durante una escritura, el archivo original no queda modificado. Si de todas formas un archivo queda en mal estado, puede reconstruirse manualmente respetando el encabezado correspondiente (ver la documentación técnica para los esquemas).

@@ -43,8 +43,9 @@ Permite registrar un nuevo producto en el sistema.
    - Formato obligatorio: 2 letras de marca + espacio + 2 letras de grupo + espacio + 2 caracteres alfanuméricos de tipo.
    - Presionar Enter sin escribir nada cancela la operación.
 2. Ingresar el nombre del producto.
-3. Ingresar el precio unitario (puede tener decimales, ej: `1.50`).
-4. Ingresar el stock inicial (número entero).
+3. Ingresar el grupo del producto (ej: `Lácteos`, `Bebidas`).
+4. Ingresar el precio unitario (puede tener decimales, ej: `1.50`).
+5. Ingresar el stock inicial (número entero).
 
 Si el código ya existe o algún dato no es válido, el sistema muestra el error y permite volver a intentarlo.
 
@@ -84,13 +85,13 @@ Producto eliminado con éxito.
 
 ## 3. Modificar producto
 
-Actualiza el nombre, precio o stock de un producto existente.
+Actualiza el nombre, grupo, precio o stock de un producto existente.
 
 **Pasos:**
 1. Ingresar el código del producto a modificar.
    - Presionar Enter sin escribir nada cancela la operación.
 2. El sistema muestra los datos actuales del producto.
-3. Ingresar el nuevo nombre, precio y stock.
+3. Ingresar el nuevo nombre, grupo, precio y stock.
    - Todos los campos son obligatorios; no es posible modificar solo uno.
 
 **Ejemplo:**
@@ -131,29 +132,34 @@ Stock actualizado con éxito.
 
 ## 5. Cierre diario
 
-Consolida todas las ventas del día en el historial y reinicia el registro de ventas para el día siguiente.
+Consolida todas las ventas del día en el historial. El archivo de ventas del día **no se elimina**; queda guardado como historial con el nombre `ventas_YYYYMMDD.csv`. El día siguiente el sistema empieza automáticamente con un archivo nuevo y vacío.
 
 **Esta operación no se puede deshacer.**
 
 **Pasos:**
-1. El sistema pide confirmación antes de proceder.
-2. Ingresar `s` para confirmar o `n` para cancelar.
+1. El sistema muestra la lista de todas las ventas registradas en el día.
+2. Ingresar `s` para confirmar el cierre o `n` para cancelar.
 3. Si se confirma, se muestra el resumen del día.
 
 **Ejemplo:**
 ```
+=== Ventas del día ===
+N°1 | 2026-07-14 09:15:32 | Cód: LA EC A1 | 2 unid. x $1.75 | Subtotal: $3.50
+N°2 | 2026-07-14 10:44:01 | Cód: AB CD 12 | 1 unid. x $5.00 | Subtotal: $5.00
+======================
+
 ¿Confirma el cierre del día? Se consolidarán las ventas y no se podrá deshacer. (s/n): s
 
 === Resumen del cierre diario ===
 Fecha:               2026-07-14
-Ventas realizadas:   8
-Unidades vendidas:   23
-Importe total:      $145.75
+Ventas realizadas:   2
+Unidades vendidas:   3
+Importe total:       $8.50
 =================================
 Ventas del día consolidadas en cierre_diario.csv.
 ```
 
-El historial de cierres se acumula en `datos/cierre_diario.csv` y nunca se borra automáticamente.
+El historial de cierres se acumula en `cierre_diario.csv` y nunca se borra automáticamente.
 
 ---
 
@@ -167,4 +173,4 @@ Seleccionar la opción `0` en el menú principal cierra la sesión y termina el 
 
 - El stock nunca puede quedar en valores negativos, ya sea por ajuste manual o por venta.
 - Los códigos de producto tienen un formato fijo: 2 letras de marca + espacio + 2 letras de grupo + espacio + 2 caracteres alfanuméricos de tipo (ej: `LA EC A1`, `AB CD 12`). El sistema rechaza cualquier código que no cumpla este formato.
-- Una vez realizado el cierre diario, las ventas del día quedan archivadas y no pueden editarse desde el programa.
+- Una vez realizado el cierre diario, las ventas del día quedan archivadas en su archivo `ventas_YYYYMMDD.csv` y no pueden editarse desde el programa.

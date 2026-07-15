@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Luis Reis Viera
 # SPDX-License-Identifier: Apache-2.0
 
-
 def mostrar_menu_supervisor():
     print()
     print("--- Menú Supervisor ---")
@@ -11,7 +10,6 @@ def mostrar_menu_supervisor():
     print("4. Ajuste manual de stock")
     print("5. Cierre diario")
     print("0. Cerrar sesión")
-
 
 def mostrar_menu_cajero():
     print()

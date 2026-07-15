@@ -7,7 +7,6 @@ import re
 # Ejemplos válidos: P001, AB123, XYZ999
 PATRON_CODIGO_PRODUCTO = r'^[A-Z]{1,3}\d{3}$'
 
-
 def codigo_es_valido(codigo):
     resultado = re.match(PATRON_CODIGO_PRODUCTO, codigo)
     return resultado is not None

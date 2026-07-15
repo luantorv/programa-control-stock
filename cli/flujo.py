@@ -3,14 +3,13 @@
 
 from logica.autenticacion import autenticar
 from logica import productos as logica_productos
+from logica import ventas as logica_ventas
 from cli import entradas, menus
-from modelos.esquemas import ROL_SUPERVISOR, ROL_CAJERO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK
+from modelos.esquemas import ROL_SUPERVISOR, ROL_CAJERO, PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK
 
 MAX_INTENTOS = 3
 
-
-# --- Login ---
-
+# Login
 def _iniciar_sesion():
     for intento in range(MAX_INTENTOS):
         nombre_usuario, contrasena = entradas.pedir_credenciales()
@@ -27,9 +26,7 @@ def _iniciar_sesion():
     print("Acceso denegado. Demasiados intentos fallidos.")
     return None
 
-
-# --- Flujos del Supervisor ---
-
+# Flujos del Supervisor
 def _flujo_alta_producto():
     while True:
         print()
@@ -45,7 +42,6 @@ def _flujo_alta_producto():
             print("Producto dado de alta con éxito.")
             return
         print("Error:", error)
-
 
 def _flujo_baja_producto():
     while True:
@@ -68,7 +64,6 @@ def _flujo_baja_producto():
         logica_productos.dar_de_baja_producto(codigo)
         print("Producto eliminado con éxito.")
         return
-
 
 def _flujo_modificar_producto():
     while True:
@@ -97,7 +92,6 @@ def _flujo_modificar_producto():
                 return
             print("Error:", error)
 
-
 def _flujo_ajustar_stock():
     while True:
         print()
@@ -112,9 +106,7 @@ def _flujo_ajustar_stock():
             return
         print("Error:", error)
 
-
-# --- Menús ---
-
+# Menús
 def _menu_supervisor():
     while True:
         menus.mostrar_menu_supervisor()
@@ -133,6 +125,40 @@ def _menu_supervisor():
         elif opcion == "5":
             print("Cierre diario: por implementar.")
 
+def _flujo_venta():
+    while True:
+        print()
+        codigo = entradas.pedir_texto("Código del producto a vender (Enter para cancelar): ").upper()
+        if codigo == "":
+            return
+        cantidad = entradas.pedir_numero_entero("Cantidad: ")
+
+        error, total = logica_ventas.registrar_venta(codigo, cantidad)
+        if error == "":
+            print("Venta registrada. Total: $" + "{:.2f}".format(total))
+            return
+        print("Error:", error)
+
+
+def _flujo_consulta():
+    while True:
+        print()
+        termino = entradas.pedir_texto("Código o nombre del producto (Enter para cancelar): ")
+        if termino == "":
+            return
+
+        resultados = logica_productos.consultar_producto(termino)
+        if len(resultados) == 0:
+            print("No se encontró ningún producto.")
+            continue
+
+        for producto in resultados:
+            print("Código:", producto[PRODUCTO_CODIGO],
+                  "| Nombre:", producto[PRODUCTO_NOMBRE],
+                  "| Precio: $" + producto[PRODUCTO_PRECIO],
+                  "| Stock:", producto[PRODUCTO_STOCK], "unidades")
+        return
+
 
 def _menu_cajero():
     while True:
@@ -142,13 +168,11 @@ def _menu_cajero():
         if opcion == "0":
             break
         elif opcion == "1":
-            print("Registro de ventas: por implementar.")
+            _flujo_venta()
         elif opcion == "2":
-            print("Consulta de stock y precio: por implementar.")
+            _flujo_consulta()
 
-
-# --- Punto de entrada ---
-
+# Punto de entrada
 def ejecutar():
     print("=== Control de Stock para un Supermercado ===")
     print()

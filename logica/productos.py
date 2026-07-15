@@ -3,6 +3,7 @@
 
 from persistencia.productos_repo import (
     buscar_producto_por_codigo,
+    buscar_productos_por_nombre,
     agregar_producto,
     actualizar_producto,
     eliminar_producto,
@@ -10,10 +11,15 @@ from persistencia.productos_repo import (
 from logica.validaciones import codigo_es_valido
 from modelos.esquemas import PRODUCTO_CODIGO, PRODUCTO_NOMBRE, PRODUCTO_PRECIO, PRODUCTO_STOCK
 
-
 def buscar_producto(codigo):
     return buscar_producto_por_codigo(codigo)
 
+
+def consultar_producto(termino):
+    por_codigo = buscar_producto_por_codigo(termino.upper())
+    if por_codigo is not None:
+        return [por_codigo]
+    return buscar_productos_por_nombre(termino)
 
 def dar_de_alta_producto(codigo, nombre, precio, stock):
     if not codigo_es_valido(codigo):
@@ -36,13 +42,11 @@ def dar_de_alta_producto(codigo, nombre, precio, stock):
     agregar_producto(nuevo_producto)
     return ""
 
-
 def dar_de_baja_producto(codigo):
     if buscar_producto_por_codigo(codigo) is None:
         return "No existe un producto con el código " + codigo + "."
     eliminar_producto(codigo)
     return ""
-
 
 def modificar_producto(codigo, nombre, precio, stock):
     if nombre == "":
@@ -61,7 +65,6 @@ def modificar_producto(codigo, nombre, precio, stock):
     producto[PRODUCTO_STOCK] = str(stock)
     actualizar_producto(producto)
     return ""
-
 
 def ajustar_stock(codigo, nueva_cantidad):
     if nueva_cantidad < 0:

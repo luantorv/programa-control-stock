@@ -3,7 +3,7 @@
 
 import os
 from persistencia.csv_utils import leer_csv, escribir_csv_atomico
-from modelos.esquemas import PRODUCTO_CODIGO, ENCABEZADO_PRODUCTOS
+from modelos.esquemas import PRODUCTO_CODIGO, PRODUCTO_NOMBRE, ENCABEZADO_PRODUCTOS
 
 _RUTA_PRODUCTOS = os.path.join(os.path.dirname(__file__), '..', 'datos', 'productos.csv')
 
@@ -40,3 +40,13 @@ def eliminar_producto(codigo):
         if producto[PRODUCTO_CODIGO] != codigo:
             productos_restantes.append(producto)
     guardar_productos(productos_restantes)
+
+
+def buscar_productos_por_nombre(nombre):
+    productos = leer_productos()
+    encontrados = []
+    nombre_lower = nombre.lower()
+    for producto in productos:
+        if nombre_lower in producto[PRODUCTO_NOMBRE].lower():
+            encontrados.append(producto)
+    return encontrados
